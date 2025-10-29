@@ -1,0 +1,17 @@
+# project-clone.service — clones/updates a Git repo on boot
+# Save to: /etc/systemd/system/project-clone.service
+[Unit]
+Description=Clone or update project repository at boot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/project-clone
+ExecStart=/opt/project/clone-or-update.sh
+User=root
+Group=root
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

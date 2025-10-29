@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# /etc/rc.local (legacy); only use if your distro still processes rc.local via systemd.
+set -euo pipefail
+REPO_URL="https://github.com/example-org/example-repo.git"
+TARGET_DIR="/opt/project/app"
+BRANCH="main"
+RUN_AS_USER="ubuntu"
+
+mkdir -p "$(dirname "$TARGET_DIR")"
+if [ ! -d "$TARGET_DIR/.git" ]; then
+  sudo -u "$RUN_AS_USER" git clone --branch "$BRANCH" --depth=1 "$REPO_URL" "$TARGET_DIR"
+else
+  pushd "$TARGET_DIR" >/dev/null
+  sudo -u "$RUN_AS_USER" git fetch origin "$BRANCH"
+  sudo -u "$RUN_AS_USER" git reset --hard "origin/$BRANCH"
+  popd >/dev/null
+fi
+
+exit 0

@@ -1,0 +1,34 @@
+# config.yml — example configuration for a web application
+# Rename secrets or move them to environment variables for production.
+app:
+  name: sample-webapp
+  port: 8080
+  allowed_hosts:
+    - "localhost"
+    - "127.0.0.1"
+
+database:
+  engine: postgresql
+  host: 127.0.0.1
+  port: 5432
+  name: app_db
+  user: app_user
+  # Prefer environment variables in production; this is only a placeholder.
+  password: "changeme"  # or set APP_DB_PASSWORD env var and omit this
+
+logging:
+  level: INFO
+  # Ensure the directory exists and is writable by the app user
+  file: /var/log/sample-webapp/app.log
+  rotate:
+    max_size_mb: 50
+    backups: 5
+    compress: true
+
+# Demonstrates how env vars can override values (pseudo-notation your app can implement)
+env_overrides:
+  database:
+    user: "${APP_DB_USER}"
+    password: "${APP_DB_PASSWORD}"
+  logging:
+    level: "${APP_LOG_LEVEL}"
